@@ -19,7 +19,7 @@ public class Server {
 	private static ConcurrentHashMap<Class<?>,Object>objectCache
 			=new ConcurrentHashMap<Class<?>, Object>();//缓存代理实例化的对象
 	
-	private  int port;				   //监听的端口号
+	private  int port;	//监听的端口号
 	private AtomicBoolean listenning = new AtomicBoolean(true); // 设置listenner的是否继续监听的标志位
 	private static Server singleServer;                         // 做成单列模式，只在init函数下创建返回值；
 
@@ -36,10 +36,8 @@ public class Server {
 				classCache.put(protocol.getName(), protocol);
 			}
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		singleServer.port = ports;

@@ -7,7 +7,11 @@ import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
-
+/**
+ * 
+ * @author Administrator
+ *
+ */
 public class Client {
 	private Connection connection;//这是个线程类，同时处理所有有关网络send receive等过程
 	private static HashMap<Integer, Call> calls = new HashMap<Integer, Call>();

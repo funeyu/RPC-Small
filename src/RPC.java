@@ -2,12 +2,12 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 public class RPC {
 	
 	private static Server server;
+	private static Client client;
 	private RPC(){}
 
 	private static class Invocation implements Callable{
@@ -46,15 +46,9 @@ public class RPC {
 	}
 	
 	public static class invoker implements InvocationHandler{
-
-		private  static Client client;
 		private String protocol;     //要代理的类名称
 		
-		public invoker(InetSocketAddress addr,String protocol){
-			
-			if(client==null){
-				this.client=Client.build(addr);
-			}
+		public invoker(String protocol){
 			this.protocol=protocol;
 		}
 		@Override
@@ -68,13 +62,18 @@ public class RPC {
 	
 	public static ExecutorProtocol getProxy(
 			Class<?> protocol,InetSocketAddress addr ){
-		
+		if(client==null){
+			client=Client.build(addr);
+		}
 		return (ExecutorProtocol) Proxy.newProxyInstance(
 				protocol.getClassLoader(), protocol.getInterfaces(), 
-				new invoker(addr,protocol.getName()));
+				new invoker(protocol.getName()));
 	}
 	
-	
+	/**
+	 * 
+	 * @param protocol
+	 */
 	public static void setProxy(Class<?extends ExecutorProtocol>protocol){
 		server.setProxy(protocol);
 	}
